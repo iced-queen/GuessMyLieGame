@@ -1,37 +1,22 @@
-/**
- * ui.js — GuessMyLie DOM helpers
- *
- * Pure UI utilities with no dependency on game state.
- * Loaded before game.js so its functions are available as globals.
- */
-
-/** Show one screen, hide all others. */
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
-/** Update the generic mid-round waiting screen. */
 function setWaiting(heading, subtext) {
   document.getElementById('waiting-heading').textContent = heading;
   document.getElementById('waiting-subtext').textContent = subtext;
 }
 
-/** Show the error screen with a custom message. */
 function showError(message) {
   document.getElementById('error-msg-text').textContent = message;
   showScreen('screen-error');
 }
 
-/**
- * Populate the annotated result statements list on the results screen.
- * @param {string[]} statements - The (shuffled) statement texts.
- * @param {number}   lieIndex   - Index of the lie within statements[].
- * @param {number}   guessIndex - Index the guesser picked.
- */
 function buildResultsList(statements, targetIndex, guessIndex, gameMode) {
   const list = document.getElementById('result-statements-list');
   list.innerHTML = '';
+  const guessedCorrectly = guessIndex === targetIndex;
 
   statements.forEach((text, i) => {
     const isLie   = gameMode === 'ottl' ? (i !== targetIndex) : (i === targetIndex);
@@ -55,7 +40,7 @@ function buildResultsList(statements, targetIndex, guessIndex, gameMode) {
     if (isGuess) {
       const guessSpan = document.createElement('span');
       guessSpan.className   = 'guessed-badge';
-      guessSpan.textContent = '← guessed';
+      guessSpan.textContent = '← guessed ' + (guessedCorrectly ? '✅' : '❌');
       div.appendChild(guessSpan);
     }
 

@@ -1,8 +1,4 @@
-/* ============================================================
-   game.css — writing screen, guessing screen, results screen
-   ============================================================ */
-
-/* ── Statement input rows (writing screen) ───────────────── */
+/* statement input rows */
 .statement-rows {
   display: flex;
   flex-direction: column;
@@ -74,7 +70,7 @@
   box-shadow: none;
 }
 
-/* ── Guess buttons (guessing screen) ─────────────────────── */
+/* guess buttons */
 .guess-buttons {
   display: flex;
   flex-direction: column;
@@ -108,7 +104,7 @@
   cursor: not-allowed;
 }
 
-/* ── Results screen ──────────────────────────────────────── */
+/* results screen */
 .result-heading {
   font-size: 1.75rem;
   font-weight: 800;
@@ -182,7 +178,7 @@
   margin-top: 2px;
 }
 
-/* ── Score banner (results screen) ────────────────────────── */
+/* score banner */
 .score-banner {
   display: flex;
   align-items: center;
@@ -226,7 +222,7 @@
   font-weight: 700;
 }
 
-/* ── Final score display (game-over screen) ────────────────── */
+/* final score display */
 .final-score-display {
   display: flex;
   flex-direction: column;
@@ -262,7 +258,7 @@
   background-clip: text;
 }
 
-/* ── Guess button entrance stagger ───────────────────────── */
+/* guess button entrance stagger */
 @keyframes stmt-fly-in {
   from { opacity: 0; transform: translateX(-16px); }
   to   { opacity: 1; transform: translateX(0); }
@@ -272,7 +268,7 @@
   animation: stmt-fly-in 0.3s ease both;
 }
 
-/* ── Guess button picked flash ───────────────────────────── */
+/* guess button picked flash */
 @keyframes btn-picked {
   0%   { transform: scale(1); }
   30%  { transform: scale(0.96); background: rgba(99, 102, 241, 0.3); }
@@ -285,7 +281,7 @@
   border-color: #6366f1;
 }
 
-/* ── Result heading pop-in ───────────────────────────────── */
+/* result heading pop-in */
 @keyframes heading-pop {
   0%   { transform: scale(0.7);  opacity: 0; }
   65%  { transform: scale(1.06); opacity: 1; }
@@ -296,7 +292,7 @@
   animation: heading-pop 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* ── Result statement stagger ────────────────────────────── */
+/* result statement stagger */
 @keyframes result-stmt-in {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -306,7 +302,7 @@
   animation: result-stmt-in 0.3s ease both;
 }
 
-/* ── Ready status pills ──────────────────────────────────── */
+/* ready status pills */
 .ready-status {
   display: flex;
   gap: 0.75rem;

@@ -1,8 +1,4 @@
-/* ============================================================
-   components.css — forms, buttons, loader, room code, round info
-   ============================================================ */
-
-/* ── Form elements ───────────────────────────────────────── */
+/* form elements */
 .form-group {
   margin-bottom: 1rem;
 }
@@ -34,7 +30,7 @@ input[type="text"]:focus {
   box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.18);
 }
 
-/* ── Divider ─────────────────────────────────────────────── */
+/* divider */
 .divider {
   display: flex;
   align-items: center;
@@ -52,7 +48,7 @@ input[type="text"]:focus {
   background: #2d2d44;
 }
 
-/* ── Buttons ─────────────────────────────────────────────── */
+/* buttons */
 .btn {
   display: block;
   width: 100%;
@@ -92,7 +88,7 @@ input[type="text"]:focus {
   background: rgba(124, 58, 237, 0.1);
 }
 
-/* ── Room code display ───────────────────────────────────── */
+/* room code display */
 .room-code-display {
   font-size: 2.75rem;
   font-weight: 800;
@@ -107,7 +103,7 @@ input[type="text"]:focus {
   user-select: all; /* make it easy to copy */
 }
 
-/* ── Round info bar ──────────────────────────────────────── */
+/* round info bar */
 .round-info {
   display: flex;
   justify-content: space-between;
@@ -123,7 +119,7 @@ input[type="text"]:focus {
   letter-spacing: 0.06em;
 }
 
-/* ── Role badges ─────────────────────────────────────────── */
+/* role badges */
 .role-badge {
   font-size: 0.7rem;
   font-weight: 700;
@@ -145,7 +141,7 @@ input[type="text"]:focus {
   border: 1px solid rgba(96, 165, 250, 0.35);
 }
 
-/* ── Loader spinner ──────────────────────────────────────── */
+/* loader spinner */
 .loader {
   width: 34px;
   height: 34px;
@@ -158,7 +154,7 @@ input[type="text"]:focus {
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── Settings panel (lobby) ─────────────────────────────── */
+/* settings panel */
 .settings-panel {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid #2d2d44;
@@ -262,7 +258,7 @@ input[type="text"]:focus {
   background: rgba(124, 58, 237, 0.12);
 }
 
-/* ── Button state animations ─────────────────────────────── */
+/* button state animations */
 @keyframes btn-send {
   0%   { transform: scale(1); }
   25%  { transform: scale(0.96); }

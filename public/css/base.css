@@ -1,15 +1,11 @@
-/* ============================================================
-   base.css — reset, layout, card, typography, utilities
-   ============================================================ */
-
-/* ── Reset ───────────────────────────────────────────────── */
+/* reset */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* ── Body ────────────────────────────────────────────────── */
+/* body */
 body {
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
   background: #0f0e17;
@@ -22,7 +18,7 @@ body {
   padding: 2rem 1rem;
 }
 
-/* ── App shell ───────────────────────────────────────────── */
+/* app shell */
 .app {
   width: 100%;
   max-width: 480px;
@@ -67,7 +63,7 @@ header h1 {
   animation: card-enter 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* ── Compact header (during gameplay) ──────────────────────── */
+/* compact header during gameplay */
 header.compact {
   margin-bottom: 0.25rem;
 }
@@ -88,11 +84,11 @@ header.compact .tagline {
   margin-top: 0.25rem;
 }
 
-/* ── Screen visibility ───────────────────────────────────── */
+/* screen visibility */
 .screen        { display: none; }
 .screen.active { display: block; }
 
-/* ── Card ────────────────────────────────────────────────── */
+/* card */
 .card {
   background: #1a1a2e;
   border: 1px solid #2d2d44;
@@ -107,7 +103,7 @@ header.compact .tagline {
   margin-bottom: 0.4rem;
 }
 
-/* ── Typography utilities ────────────────────────────────── */
+/* typography utilities */
 .muted {
   color: #9ca3af;
   font-size: 0.9rem;
@@ -117,10 +113,10 @@ header.compact .tagline {
 
 .text-center { text-align: center; }
 
-/* ── Visibility utility ──────────────────────────────────── */
+/* visibility utility */
 .hidden { display: none !important; }
 
-/* ── Footer ──────────────────────────────────────────────── */
+/* footer */
 .site-footer {
   position: fixed;
   bottom: 0;
@@ -133,7 +129,7 @@ header.compact .tagline {
   pointer-events: none;
 }
 
-/* ── Responsive tweaks ───────────────────────────────────── */
+/* responsive tweaks */
 @media (max-width: 480px) {
   header h1          { font-size: 2rem; }
   .card              { padding: 1.5rem; }

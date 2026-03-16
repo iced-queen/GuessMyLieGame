@@ -1,34 +1,15 @@
-/**
- * game.js — GuessMyLie client
- *
- * Manages game state, wires up all Socket.IO events and UI interactions.
- * DOM helpers (showScreen, setWaiting, showError, buildResultsList) live
- * in ui.js and are available as globals via the preceding <script> tag.
- *
- * Screens (only one visible at a time):
- *   screen-lobby        → enter name, create or join a room
- *   screen-waiting-room → show room code while waiting for 2nd player
- *   screen-writing      → writer enters 2 truths + 1 lie
- *   screen-waiting      → generic "please wait" used mid-round
- *   screen-guessing     → guesser picks which statement is the lie
- *   screen-results      → annotated result + Next Round button
- *   screen-error        → disconnect / room error
- */
-
 const socket = io();
 
-// ── Game state ───────────────────────────────────────────────────────────────
-let myPlayerIndex = -1; // Seat: 0 (creator) or 1 (joiner)
-let writerIndex   = 0;  // Which player is the writer this round
-let currentRound  = 1;  // Round counter (displayed in the UI)
-let playerNames   = []; // ["Alice", "Bob"] — populated on game-startlet gameSettings  = { totalRounds: 5, gameMode: 'ttol' };
+let myPlayerIndex = -1;
+let writerIndex   = 0;
+let currentRound  = 1;
+let playerNames   = [];
+let gameSettings  = { totalRounds: 5, gameMode: 'ttol' };
 let scores        = [0, 0];
-/** Returns true if this client is the writer for the current round. */
+
 function amITheWriter() {
   return myPlayerIndex === writerIndex;
 }
-
-// ── Lobby ────────────────────────────────────────────────────────────────────
 
 document.getElementById('create-btn').addEventListener('click', () => {
   const name = document.getElementById('player-name').value.trim();
@@ -63,7 +44,7 @@ document.getElementById('room-code-input').addEventListener('keydown', e => {
   if (e.key === 'Enter') document.getElementById('join-btn').click();
 });
 
-// ── Settings UI (lobby only) ───────────────────────────────────────────────
+// settings UI
 let roundsSetting = 5;
 const roundsInput = document.getElementById('rounds-display');
 
@@ -87,7 +68,7 @@ roundsInput.addEventListener('input', () => {
 });
 
 roundsInput.addEventListener('blur', () => {
-  // Restore a valid value if field is empty or out of range
+  // snap back to a valid number if they leave it blank
   roundsSetting = clampRounds(isNaN(parseInt(roundsInput.value, 10)) ? 5 : parseInt(roundsInput.value, 10));
   roundsInput.value = roundsSetting;
 });
@@ -99,20 +80,18 @@ document.querySelectorAll('.mode-pill').forEach(btn => {
   });
 });
 
-// ── Socket: lobby responses ───────────────────────────────────────────────────
-
+// socket responses
 socket.on('room-created', ({ roomCode, playerIndex }) => {
-  myPlayerIndex = playerIndex; // 0
+  myPlayerIndex = playerIndex;
   document.getElementById('display-room-code').textContent = roomCode;
   showScreen('screen-waiting-room');
 });
 
 socket.on('joined-room', ({ roomCode, playerIndex }) => {
-  myPlayerIndex = playerIndex; // 1 — game-start fires immediately after
+  myPlayerIndex = playerIndex;
 });
 
-// ── Socket: game-start (fires at the beginning of every round) ───────────────
-
+// game-start fires at the start of every round
 socket.on('game-start', ({ players, writerIndex: wi, round, settings, scores: s }) => {
   writerIndex  = wi;
   currentRound = round;
@@ -135,7 +114,7 @@ socket.on('game-start', ({ players, writerIndex: wi, round, settings, scores: s 
       document.getElementById(id).value = '';
     });
 
-    // Adjust writing screen rows for game mode
+    // update writing rows for the current game mode
     const isOttl = gameSettings.gameMode === 'ottl';
     const row1   = document.getElementById('stmt-1').closest('.stmt-row');
     const badge1 = row1.querySelector('.stmt-type-badge');
@@ -174,8 +153,6 @@ socket.on('game-start', ({ players, writerIndex: wi, round, settings, scores: s 
     showScreen('screen-waiting');
   }
 });
-
-// ── Socket: mid-round ─────────────────────────────────────────────────────────
 
 socket.on('show-statements', ({ statements }) => {
   if (amITheWriter()) {
@@ -309,7 +286,6 @@ socket.on('opponent-play-again', () => {
   const btn = document.getElementById('play-again-btn');
   if (!btn.disabled) btn.classList.add('pulse');
 });
-// ── Socket: error / disconnect ────────────────────────────────────────────────
 
 socket.on('player-disconnected', ({ name }) => {
   showError(`${name} disconnected. The game has ended.`);
@@ -318,8 +294,6 @@ socket.on('player-disconnected', ({ name }) => {
 socket.on('error-message', message => {
   showError(message);
 });
-
-// ── Writing screen ────────────────────────────────────────────────────────────
 
 document.getElementById('submit-statements-btn').addEventListener('click', () => {
   const s0 = document.getElementById('stmt-0').value.trim();
@@ -339,13 +313,9 @@ document.getElementById('submit-statements-btn').addEventListener('click', () =>
   socket.emit('submit-statements', { statements: [s0, s1, s2] });
 });
 
-// ── Results screen ────────────────────────────────────────────────────────────
-
 document.getElementById('next-round-btn').addEventListener('click', () => {
   socket.emit('next-round');
 });
-
-// ── Error screen ──────────────────────────────────────────────────────────────
 
 document.getElementById('back-to-lobby-btn').addEventListener('click', () => {
   location.reload();
