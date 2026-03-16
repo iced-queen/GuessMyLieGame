@@ -1,6 +1,6 @@
 # GuessMyLie
 
-![GuessMyLie Logo](https://guessmyliegame.onrender.com/img/logo.png)
+[![GuessMyLie Logo](https://guessmyliegame.onrender.com/img/logo.png)](https://guessmyliegame.onrender.com)
 
 A small multiplayer social game where one player writes three statements and the other must guess the truth.
 
