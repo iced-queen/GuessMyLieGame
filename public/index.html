@@ -148,9 +148,16 @@
         <div class="result-statements" id="result-statements-list"></div>
 
         <button id="next-round-btn" class="btn primary">Next Round &rarr;</button>
-        <p class="muted text-center hidden" id="waiting-next-msg">
-          Waiting for the other player&hellip;
-        </p>
+        <div class="ready-status" id="ready-status">
+          <div class="ready-pill" id="ready-pill-me">
+            <span class="ready-dot"></span>
+            <span id="ready-name-me">You</span>
+          </div>
+          <div class="ready-pill" id="ready-pill-them">
+            <span class="ready-dot"></span>
+            <span id="ready-name-them">Them</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -167,6 +174,8 @@
     </div>
 
   </div><!-- /.app -->
+
+  <footer class="site-footer">Made with &#10084;&#65039; by Iced Queen</footer>
 
   <!-- Socket.IO client (served automatically by the server) -->
   <script src="/socket.io/socket.io.js"></script>

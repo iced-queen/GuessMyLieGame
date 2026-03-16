@@ -157,3 +157,24 @@ input[type="text"]:focus {
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Button state animations ─────────────────────────────── */
+@keyframes btn-send {
+  0%   { transform: scale(1); }
+  25%  { transform: scale(0.96); }
+  60%  { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+.btn.sent {
+  animation: btn-send 0.35s ease;
+}
+
+@keyframes btn-pulse {
+  0%, 100% { box-shadow: 0 0 0 0    rgba(124, 58, 237, 0.55); }
+  50%       { box-shadow: 0 0 0 10px rgba(124, 58, 237, 0);   }
+}
+
+.btn.pulse {
+  animation: btn-pulse 1s ease infinite;
+}

@@ -16,9 +16,10 @@ body {
   color: #fffffe;
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 1rem;
+  justify-content: flex-start;
+  padding: 2rem 1rem;
 }
 
 /* ── App shell ───────────────────────────────────────────── */
@@ -29,7 +30,7 @@ body {
 
 header {
   text-align: center;
-  margin-bottom: 1.75rem;
+  margin-bottom: 0.5rem;
 }
 
 header h1 {
@@ -43,11 +44,27 @@ header h1 {
 
 .site-logo {
   display: block;
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-  margin: 0 auto 0.5rem;
-  border-radius: 16px;
+  width: 300px;
+  height: auto;
+  margin: 0 auto 0;
+  border-radius: 32px;
+  animation: logo-bounce 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes logo-bounce {
+  0%   { transform: scale(0.5) translateY(-20px); opacity: 0; }
+  65%  { transform: scale(1.08) translateY(0);    opacity: 1; }
+  82%  { transform: scale(0.96); }
+  100% { transform: scale(1); }
+}
+
+@keyframes card-enter {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.screen.active .card {
+  animation: card-enter 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .tagline {
@@ -88,10 +105,24 @@ header h1 {
 /* ── Visibility utility ──────────────────────────────────── */
 .hidden { display: none !important; }
 
+/* ── Footer ──────────────────────────────────────────────── */
+.site-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #4b5563;
+  font-size: 0.8rem;
+  padding: 0.6rem 0;
+  pointer-events: none;
+}
+
 /* ── Responsive tweaks ───────────────────────────────────── */
 @media (max-width: 480px) {
   header h1          { font-size: 2rem; }
   .card              { padding: 1.5rem; }
   .room-code-display { font-size: 2.25rem; }
   .result-heading    { font-size: 1.4rem; }
+  .site-logo         { width: 200px; }
 }

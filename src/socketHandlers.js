@@ -153,8 +153,8 @@ function registerHandlers(io) {
         });
         console.log(`[room]       ${socket.data.roomCode} — round ${room.round} starting`);
       } else {
-        socket.emit('waiting-for-next-round');
-      }
+        socket.emit('waiting-for-next-round');        // Let the other player know this player is ready
+        socket.to(socket.data.roomCode).emit('opponent-ready');      }
     });
 
     // ── disconnect ───────────────────────────────────────────────────────────

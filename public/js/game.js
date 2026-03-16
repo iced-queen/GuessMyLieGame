@@ -75,6 +75,7 @@ socket.on('game-start', ({ players, writerIndex: wi, round }) => {
     const submitBtn = document.getElementById('submit-statements-btn');
     submitBtn.disabled    = false;
     submitBtn.textContent = 'Submit Statements';
+    submitBtn.classList.remove('sent');
     document.getElementById('writing-round').textContent = `Round ${round}`;
     showScreen('screen-writing');
   } else {
@@ -103,9 +104,11 @@ socket.on('show-statements', ({ statements }) => {
 
     statements.forEach((text, i) => {
       const btn = document.createElement('button');
-      btn.className   = 'guess-btn';
+      btn.className            = 'guess-btn animate-in';
+      btn.style.animationDelay = `${i * 0.1}s`;
       btn.textContent = text;
       btn.addEventListener('click', () => {
+        btn.classList.add('picked');
         container.querySelectorAll('.guess-btn').forEach(b => b.disabled = true);
         socket.emit('submit-guess', { guessIndex: i });
       });
@@ -123,7 +126,12 @@ socket.on('round-result', ({ guessIndex, lieIndex, correct, writerName, guesserN
     ? (correct ? `${guesserName} spotted your lie.`  : `${guesserName} couldn't find your lie.`)
     : (correct ? 'You spotted the lie!'              : `Statement ${lieIndex + 1} was the lie. Better luck next round!`);
 
-  document.getElementById('result-heading').textContent = heading;
+  const headingEl = document.getElementById('result-heading');
+  headingEl.textContent = heading;
+  headingEl.classList.remove('pop');
+  void headingEl.offsetWidth; // reflow to restart animation
+  headingEl.classList.add('pop');
+
   document.getElementById('result-detail').textContent  = detail;
   document.getElementById('results-round').textContent  = `Round ${currentRound}`;
 
@@ -132,7 +140,12 @@ socket.on('round-result', ({ guessIndex, lieIndex, correct, writerName, guesserN
   const nextBtn = document.getElementById('next-round-btn');
   nextBtn.disabled    = false;
   nextBtn.textContent = 'Next Round →';
-  document.getElementById('waiting-next-msg').classList.add('hidden');
+  nextBtn.classList.remove('pulse');
+
+  document.getElementById('ready-name-me').textContent   = playerNames[myPlayerIndex];
+  document.getElementById('ready-name-them').textContent = playerNames[1 - myPlayerIndex];
+  document.getElementById('ready-pill-me').classList.remove('is-ready');
+  document.getElementById('ready-pill-them').classList.remove('is-ready');
 
   showScreen('screen-results');
 });
@@ -141,9 +154,14 @@ socket.on('waiting-for-next-round', () => {
   const btn = document.getElementById('next-round-btn');
   btn.disabled    = true;
   btn.textContent = 'Waiting…';
-  document.getElementById('waiting-next-msg').classList.remove('hidden');
+  btn.classList.remove('pulse');
+  document.getElementById('ready-pill-me').classList.add('is-ready');
 });
-
+socket.on('opponent-ready', () => {
+  document.getElementById('ready-pill-them').classList.add('is-ready');
+  const btn = document.getElementById('next-round-btn');
+  if (!btn.disabled) btn.classList.add('pulse');
+});
 // ── Socket: error / disconnect ────────────────────────────────────────────────
 
 socket.on('player-disconnected', ({ name }) => {
@@ -169,6 +187,7 @@ document.getElementById('submit-statements-btn').addEventListener('click', () =>
   const btn = document.getElementById('submit-statements-btn');
   btn.disabled    = true;
   btn.textContent = 'Submitted! Waiting for guesser…';
+  btn.classList.add('sent');
 
   socket.emit('submit-statements', { statements: [s0, s1, s2] });
 });

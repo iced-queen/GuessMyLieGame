@@ -39,6 +39,7 @@ function buildResultsList(statements, lieIndex, guessIndex) {
 
     const div = document.createElement('div');
     div.className = `result-stmt ${isLie ? 'is-lie' : 'is-true'}`;
+    div.style.animationDelay = `${i * 0.12}s`;
 
     const badge = document.createElement('span');
     badge.className   = 'stmt-badge';

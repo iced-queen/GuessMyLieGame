@@ -181,3 +181,94 @@
   flex-shrink: 0;
   margin-top: 2px;
 }
+
+/* ── Guess button entrance stagger ───────────────────────── */
+@keyframes stmt-fly-in {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.guess-btn.animate-in {
+  animation: stmt-fly-in 0.3s ease both;
+}
+
+/* ── Guess button picked flash ───────────────────────────── */
+@keyframes btn-picked {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(0.96); background: rgba(99, 102, 241, 0.3); }
+  65%  { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+.guess-btn.picked {
+  animation: btn-picked 0.4s ease forwards;
+  border-color: #6366f1;
+}
+
+/* ── Result heading pop-in ───────────────────────────────── */
+@keyframes heading-pop {
+  0%   { transform: scale(0.7);  opacity: 0; }
+  65%  { transform: scale(1.06); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+.result-heading.pop {
+  animation: heading-pop 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ── Result statement stagger ────────────────────────────── */
+@keyframes result-stmt-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.result-stmt {
+  animation: result-stmt-in 0.3s ease both;
+}
+
+/* ── Ready status pills ──────────────────────────────────── */
+.ready-status {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.ready-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: 1px solid #2d2d44;
+  color: #6b7280;
+  transition: border-color 0.3s, color 0.3s, background 0.3s;
+}
+
+.ready-pill.is-ready {
+  border-color: rgba(34, 197, 94, 0.5);
+  color: #4ade80;
+  background: rgba(34, 197, 94, 0.1);
+  animation: pill-pop 0.35s ease both;
+}
+
+.ready-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4b5563;
+  flex-shrink: 0;
+  transition: background 0.3s;
+}
+
+.ready-pill.is-ready .ready-dot {
+  background: #4ade80;
+}
+
+@keyframes pill-pop {
+  0%   { transform: scale(1); }
+  45%  { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
