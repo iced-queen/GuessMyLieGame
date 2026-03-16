@@ -158,6 +158,92 @@ input[type="text"]:focus {
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* ── Settings panel (lobby) ─────────────────────────────── */
+.settings-panel {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid #2d2d44;
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  margin-top: 0.75rem;
+}
+
+.settings-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #6b7280;
+  margin-bottom: 0.65rem;
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.55rem;
+}
+.setting-row:last-child { margin-bottom: 0; }
+
+.setting-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #d1d5db;
+}
+
+/* Stepper */
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stepper-btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #2d2d44;
+  border: none;
+  border-radius: 6px;
+  color: #fffffe;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.stepper-btn:hover { background: #3d3d5c; }
+
+#rounds-display {
+  min-width: 24px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+/* Mode pills */
+.mode-pills {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.mode-pill {
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid #2d2d44;
+  background: transparent;
+  color: #6b7280;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.mode-pill.active {
+  border-color: #7c3aed;
+  color: #a78bfa;
+  background: rgba(124, 58, 237, 0.12);
+}
+
 /* ── Button state animations ─────────────────────────────── */
 @keyframes btn-send {
   0%   { transform: scale(1); }

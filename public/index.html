@@ -63,6 +63,36 @@
     </div>
 
     <!-- ═══════════════════════════════════════════════════
+         ROOM SETTINGS — chosen by the room creator
+    ═══════════════════════════════════════════════════ -->
+    <div id="screen-room-settings" class="screen">
+      <div class="card">
+        <h2>Room Settings</h2>
+        <p class="muted">Customise the game before your friend joins.</p>
+
+        <div class="setting-row" style="margin-top:1.25rem">
+          <span class="setting-name">Rounds</span>
+          <div class="stepper">
+            <button type="button" id="rounds-dec" class="stepper-btn">−</button>
+            <span id="rounds-display">5</span>
+            <button type="button" id="rounds-inc" class="stepper-btn">+</button>
+          </div>
+        </div>
+
+        <div class="setting-row" style="margin-top:1rem">
+          <span class="setting-name">Mode</span>
+          <div class="mode-pills">
+            <button type="button" class="mode-pill active" data-mode="ttol">2 Truths, 1 Lie</button>
+            <button type="button" class="mode-pill" data-mode="ottl">1 Truth, 2 Lies</button>
+          </div>
+        </div>
+
+        <button id="confirm-create-btn" class="btn primary" style="margin-top:1.5rem">Create Room</button>
+        <button id="back-to-lobby-settings-btn" class="btn secondary">← Back</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
          WAITING FOR OPPONENT — show the room code to share
     ═══════════════════════════════════════════════════ -->
     <div id="screen-waiting-room" class="screen">
@@ -86,7 +116,7 @@
         </div>
 
         <h2>Write Your Statements</h2>
-        <p class="muted">
+        <p class="muted" id="writing-prompt">
           Enter <strong>two truths</strong> in the first two fields and
           your <strong>one lie</strong> in the last. The order will be
           shuffled for the guesser.
@@ -141,8 +171,8 @@
           <span class="role-badge guesser">Guesser</span>
         </div>
 
-        <h2>Which One Is The Lie?</h2>
-        <p class="muted">Tap the statement you think is the lie.</p>
+        <h2 id="guessing-h2">Which One Is The Lie?</h2>
+        <p class="muted" id="guessing-prompt">Tap the statement you think is the lie.</p>
 
         <!-- Statement buttons are injected here by game.js -->
         <div class="guess-buttons" id="guess-buttons"></div>
@@ -156,6 +186,16 @@
       <div class="card">
         <div class="round-info">
           <span class="round-label" id="results-round">Round 1</span>
+        </div>
+
+        <div class="score-banner" id="result-score-banner">
+          <span class="score-player" id="score-name-0">—</span>
+          <div class="score-tally">
+            <span class="score-val" id="score-val-0">0</span>
+            <span class="score-sep">–</span>
+            <span class="score-val" id="score-val-1">0</span>
+          </div>
+          <span class="score-player" id="score-name-1">—</span>
         </div>
 
         <h2 class="result-heading" id="result-heading"></h2>
@@ -173,6 +213,28 @@
           <div class="ready-pill" id="ready-pill-them">
             <span class="ready-dot"></span>
             <span id="ready-name-them">Them</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         GAME OVER — final scores + winner
+    ═══════════════════════════════════════════════════ -->
+    <div id="screen-game-over" class="screen">
+      <div class="card text-center">
+        <h2 id="gameover-heading"></h2>
+        <p class="muted" id="gameover-detail"></p>
+        <div class="final-score-display" id="final-score-display"></div>
+        <button id="play-again-btn" class="btn primary" style="margin-top:1.5rem">Play Again</button>
+        <div class="ready-status" id="play-again-ready-status">
+          <div class="ready-pill" id="play-again-pill-me">
+            <span class="ready-dot"></span>
+            <span id="play-again-name-me">You</span>
+          </div>
+          <div class="ready-pill" id="play-again-pill-them">
+            <span class="ready-dot"></span>
+            <span id="play-again-name-them">Them</span>
           </div>
         </div>
       </div>

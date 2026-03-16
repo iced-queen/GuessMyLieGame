@@ -6,10 +6,12 @@
 //   players:        [ { id: socketId, name: string }, ... ],  // max 2
 //   writerIndex:    number,   // 0 or 1 — index into players[]
 //   statements:     string[], // 3 statements submitted by the writer
-//   lieIndex:       number,   // shuffled index (0-2) of the lie statement
+//   targetIndex:    number,   // shuffled index the guesser must pick to be correct
 //   round:          number,   // starts at 1, increments each round
 //   phase:          string,   // 'waiting' | 'writing' | 'guessing' | 'reveal'
 //   nextRoundVotes: Set,      // socket IDs that clicked "Next Round"
+//   settings:       { totalRounds: number, gameMode: 'ttol'|'ottl' },
+//   scores:         [number, number],  // scores[playerIndex]
 // }
 //
 const rooms = {};

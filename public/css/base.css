@@ -67,6 +67,21 @@ header h1 {
   animation: card-enter 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+/* ── Compact header (during gameplay) ──────────────────────── */
+header.compact {
+  margin-bottom: 0.25rem;
+}
+header.compact .site-logo {
+  width: 72px;
+  animation: none;
+}
+header.compact h1 {
+  font-size: 1.3rem;
+}
+header.compact .tagline {
+  display: none;
+}
+
 .tagline {
   color: #6b7280;
   font-size: 0.875rem;

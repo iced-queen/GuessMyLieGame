@@ -29,12 +29,12 @@ function showError(message) {
  * @param {number}   lieIndex   - Index of the lie within statements[].
  * @param {number}   guessIndex - Index the guesser picked.
  */
-function buildResultsList(statements, lieIndex, guessIndex) {
+function buildResultsList(statements, targetIndex, guessIndex, gameMode) {
   const list = document.getElementById('result-statements-list');
   list.innerHTML = '';
 
   statements.forEach((text, i) => {
-    const isLie   = (i === lieIndex);
+    const isLie   = gameMode === 'ottl' ? (i !== targetIndex) : (i === targetIndex);
     const isGuess = (i === guessIndex);
 
     const div = document.createElement('div');
