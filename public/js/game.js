@@ -38,6 +38,10 @@ document.getElementById('create-btn').addEventListener('click', () => {
 
 document.getElementById('confirm-create-btn').addEventListener('click', () => {
   const name     = document.getElementById('player-name').value.trim();
+  if (!roundsInput.checkValidity() || roundsInput.value === '') {
+    roundsInput.reportValidity();
+    return;
+  }
   const gameMode = document.querySelector('.mode-pill.active').dataset.mode;
   socket.emit('create-room', { playerName: name, settings: { totalRounds: roundsSetting, gameMode } });
 });
@@ -61,19 +65,31 @@ document.getElementById('room-code-input').addEventListener('keydown', e => {
 
 // ── Settings UI (lobby only) ───────────────────────────────────────────────
 let roundsSetting = 5;
+const roundsInput = document.getElementById('rounds-display');
+
+function clampRounds(val) {
+  return Math.max(1, Math.min(30, val));
+}
 
 document.getElementById('rounds-dec').addEventListener('click', () => {
-  if (roundsSetting > 1) {
-    roundsSetting--;
-    document.getElementById('rounds-display').textContent = roundsSetting;
-  }
+  roundsSetting = clampRounds(roundsSetting - 1);
+  roundsInput.value = roundsSetting;
 });
 
 document.getElementById('rounds-inc').addEventListener('click', () => {
-  if (roundsSetting < 20) {
-    roundsSetting++;
-    document.getElementById('rounds-display').textContent = roundsSetting;
-  }
+  roundsSetting = clampRounds(roundsSetting + 1);
+  roundsInput.value = roundsSetting;
+});
+
+roundsInput.addEventListener('input', () => {
+  const val = parseInt(roundsInput.value, 10);
+  if (!isNaN(val)) roundsSetting = clampRounds(val);
+});
+
+roundsInput.addEventListener('blur', () => {
+  // Restore a valid value if field is empty or out of range
+  roundsSetting = clampRounds(isNaN(parseInt(roundsInput.value, 10)) ? 5 : parseInt(roundsInput.value, 10));
+  roundsInput.value = roundsSetting;
 });
 
 document.querySelectorAll('.mode-pill').forEach(btn => {
