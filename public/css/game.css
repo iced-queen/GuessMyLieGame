@@ -1,0 +1,183 @@
+/* ============================================================
+   game.css — writing screen, guessing screen, results screen
+   ============================================================ */
+
+/* ── Statement input rows (writing screen) ───────────────── */
+.statement-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 1.25rem 0;
+}
+
+.stmt-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: #0f0e17;
+  border: 1px solid #2d2d44;
+  border-radius: 10px;
+  padding: 0.6rem 0.8rem;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+/* Truth rows — green tint */
+.stmt-row.truth-row {
+  border-color: rgba(34, 197, 94, 0.4);
+  background: rgba(34, 197, 94, 0.06);
+}
+.stmt-row.truth-row:focus-within {
+  border-color: rgba(34, 197, 94, 0.7);
+}
+
+/* Lie row — red tint */
+.stmt-row.lie-row {
+  border-color: rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.06);
+}
+.stmt-row.lie-row:focus-within {
+  border-color: rgba(239, 68, 68, 0.65);
+}
+
+/* Static Truth / Lie badge inside writing rows */
+.stmt-type-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.truth-badge {
+  background: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+}
+
+.lie-badge {
+  background: rgba(239, 68, 68, 0.18);
+  color: #f87171;
+}
+
+/* Text input inside a stmt-row — transparent, no extra border */
+.stmt-row input[type="text"] {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  flex: 1;
+  min-width: 0;
+}
+.stmt-row input[type="text"]:focus {
+  box-shadow: none;
+}
+
+/* ── Guess buttons (guessing screen) ─────────────────────── */
+.guess-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 1.25rem;
+}
+
+.guess-btn {
+  width: 100%;
+  background: #0f0e17;
+  border: 1px solid #2d2d44;
+  color: #fffffe;
+  text-align: left;
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  cursor: pointer;
+  transition: border-color 0.18s, background 0.18s;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.guess-btn:hover:not(:disabled) {
+  border-color: #6366f1;
+  background: rgba(99, 102, 241, 0.1);
+}
+
+.guess-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ── Results screen ──────────────────────────────────────── */
+.result-heading {
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin-bottom: 0.35rem;
+}
+
+.result-statements {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin: 1.25rem 0;
+}
+
+/* One annotated statement row */
+.result-stmt {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  border-radius: 10px;
+  padding: 0.8rem 0.9rem;
+}
+
+.result-stmt.is-true {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+}
+
+.result-stmt.is-lie {
+  background: rgba(239, 68, 68, 0.07);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+/* Small label badge: "✓ TRUTH" or "✗ LIE" */
+.stmt-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.is-true .stmt-badge {
+  background: rgba(34, 197, 94, 0.22);
+  color: #4ade80;
+}
+
+.is-lie .stmt-badge {
+  background: rgba(239, 68, 68, 0.18);
+  color: #f87171;
+}
+
+/* Statement text — grows to fill available space */
+.stmt-text {
+  flex: 1;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+/* "← guessed" marker pushed to the far right */
+.guessed-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #fbbf24;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+}

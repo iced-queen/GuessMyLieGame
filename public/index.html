@@ -4,12 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GuessMyLie</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/game.css" />
 </head>
 <body>
   <div class="app">
 
     <header>
+      <img src="img/logo.png" alt="GuessMyLie logo" class="site-logo" />
       <h1>GuessMyLie</h1>
       <p class="tagline">Two Truths &amp; a Lie — Can you spot the deception?</p>
     </header>
@@ -167,7 +170,7 @@
 
   <!-- Socket.IO client (served automatically by the server) -->
   <script src="/socket.io/socket.io.js"></script>
-  <!-- Our game logic -->
-  <script src="game.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/game.js"></script>
 </body>
 </html>

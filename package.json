@@ -2,9 +2,9 @@
   "name": "guessmylie",
   "version": "1.0.0",
   "description": "A two-player browser game inspired by Two Truths and a Lie",
-  "main": "server.js",
+  "main": "src/server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node src/server.js"
   },
   "dependencies": {
     "express": "^4.18.2",
