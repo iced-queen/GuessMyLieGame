@@ -6,6 +6,7 @@ let currentRound  = 1;
 let playerNames   = [];
 let gameSettings  = { totalRounds: 5, gameMode: 'ttol' };
 let scores        = [0, 0];
+let myRoomCode    = null;
 
 // Writer: stores the un-shuffled statements so we can label the shuffled preview
 let submittedStatements = null;
@@ -117,6 +118,7 @@ document.querySelectorAll('.mode-pill').forEach(btn => {
 // socket responses
 socket.on('room-created', ({ roomCode, playerIndex }) => {
   myPlayerIndex = playerIndex;
+  myRoomCode    = roomCode;
   const roomCodeEl = document.getElementById('display-room-code');
   roomCodeEl.textContent = roomCode;
   roomCodeEl.onclick = () => {
@@ -131,6 +133,7 @@ socket.on('room-created', ({ roomCode, playerIndex }) => {
 
 socket.on('joined-room', ({ roomCode, playerIndex }) => {
   myPlayerIndex = playerIndex;
+  myRoomCode    = roomCode;
 });
 
 // game-start fires at the start of every round
@@ -151,6 +154,7 @@ socket.on('game-start', ({ players, writerIndex: wi, round, settings, scores: s 
   typingIndicator.classList.add('hidden');
   document.getElementById('writing-tip-box').classList.add('hidden');
   document.getElementById('guessing-tip-box').classList.add('hidden');
+  document.getElementById('opponent-banner').classList.add('hidden');
 
   document.querySelector('header').classList.add('compact');
 
@@ -386,6 +390,7 @@ socket.on('opponent-play-again', () => {
 });
 
 socket.on('player-disconnected', ({ name }) => {
+  document.getElementById('opponent-banner').classList.add('hidden');
   showError(`${name} disconnected. The game has ended.`);
 });
 
@@ -450,4 +455,31 @@ document.getElementById('back-to-lobby-btn').addEventListener('click', () => {
 
 document.getElementById('play-again-btn').addEventListener('click', () => {
   socket.emit('play-again');
+});
+
+// Connection state handling
+socket.on('disconnect', () => {
+  if (myPlayerIndex !== -1) {
+    document.getElementById('connection-overlay').classList.remove('hidden');
+  }
+});
+
+socket.on('connect', () => {
+  if (myPlayerIndex !== -1 && myRoomCode) {
+    socket.emit('rejoin-room', { roomCode: myRoomCode, playerIndex: myPlayerIndex });
+  }
+});
+
+socket.on('rejoined', () => {
+  document.getElementById('connection-overlay').classList.add('hidden');
+});
+
+socket.on('opponent-disconnected', ({ name }) => {
+  document.getElementById('opponent-banner-text').textContent =
+    `${name} disconnected — waiting for them to reconnect…`;
+  document.getElementById('opponent-banner').classList.remove('hidden');
+});
+
+socket.on('opponent-reconnected', () => {
+  document.getElementById('opponent-banner').classList.add('hidden');
 });
