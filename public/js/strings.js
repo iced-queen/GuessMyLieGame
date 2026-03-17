@@ -1,8 +1,8 @@
-// Client-side strings — keep in sync with src/strings.js
+// keep in sync with src/strings.js
 
 const TIPS = {
 
-  // Shown to the GUESSER while the writer is composing (2 Truths, 1 Lie)
+  // guesser tips (2 truths, 1 lie)
   guesser: [
     'Liars often add unnecessary detail to sound more credible.',
     'The most interesting-sounding statement might be the lie.',
@@ -21,7 +21,7 @@ const TIPS = {
     "Your opponent knows what you'll expect. Sometimes the obvious one is the trick.",
   ],
 
-  // Shown to the GUESSER while the writer is composing (1 Truth, 2 Lies)
+  // guesser tips (1 truth, 2 lies)
   guesserOttl: [
     'With two lies in the mix, the truth will likely be the most understated.',
     'The true statement is often the one that feels the least like it needs to impress.',
@@ -37,7 +37,7 @@ const TIPS = {
     'The truth often lacks the flair the writer tries to give the lies.',
   ],
 
-  // Shown to the WRITER while composing their statements (2 Truths, 1 Lie)
+  // writer tips (2 truths, 1 lie)
   writer: [
     'Ground your lie in something plausible — the best lies are almost true.',
     'Use specific details in your truths to make the lie feel just as real.',
@@ -56,7 +56,7 @@ const TIPS = {
     "Don't overthink the lie. Simple and plausible beats clever and elaborate.",
   ],
 
-  // Shown to the WRITER while composing their statements (1 Truth, 2 Lies)
+  // writer tips (1 truth, 2 lies)
   writerOttl: [
     'You only have one truth — make it feel just as unremarkable as the lies.',
     'Keep your truth from standing out. Plain and quiet wins.',
@@ -74,7 +74,7 @@ const TIPS = {
 
 };
 
-// Shown to the GUESSER while waiting for the writer (Did You Know facts)
+// did you know facts
 const FACTS = [
   'Most people tell 1–2 lies per day on average.',
   'Research suggests 54% of lies go undetected by the person being lied to.',

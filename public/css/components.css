@@ -69,7 +69,7 @@ input[type="text"]:focus {
   cursor: not-allowed;
 }
 
-/* Primary — solid gradient */
+/* primary */
 .btn.primary {
   background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%);
   color: #fff;
@@ -78,7 +78,7 @@ input[type="text"]:focus {
   filter: brightness(1.12);
 }
 
-/* Secondary — outlined */
+/* secondary */
 .btn.secondary {
   background: transparent;
   color: #a78bfa;
@@ -126,7 +126,7 @@ input[type="text"]:focus {
   opacity: 1;
 }
 
-/* round info bar */
+/* round info */
 .round-info {
   display: flex;
   justify-content: space-between;
@@ -164,7 +164,7 @@ input[type="text"]:focus {
   border: 1px solid rgba(96, 165, 250, 0.35);
 }
 
-/* loader spinner */
+/* loader */
 .loader {
   width: 34px;
   height: 34px;
@@ -281,7 +281,7 @@ input[type="text"]:focus {
   background: rgba(124, 58, 237, 0.12);
 }
 
-/* button state animations */
+/* button animations */
 @keyframes btn-send {
   0%   { transform: scale(1); }
   25%  { transform: scale(0.96); }

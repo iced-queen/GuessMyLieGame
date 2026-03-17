@@ -8,7 +8,7 @@ let gameSettings  = { totalRounds: 5, gameMode: 'ttol' };
 let scores        = [0, 0];
 let myRoomCode    = null;
 
-// Writer: stores the un-shuffled statements so we can label the shuffled preview
+// keeps original statement order for the writer's shuffled preview
 let submittedStatements = null;
 
 let tipCycleIndex  = 0;
@@ -74,7 +74,7 @@ document.getElementById('join-btn').addEventListener('click', () => {
   socket.emit('join-room', { roomCode: code, playerName: name });
 });
 
-// Allow pressing Enter in the code field to trigger Join
+// enter key on room code field
 document.getElementById('room-code-input').addEventListener('keydown', e => {
   if (e.key === 'Enter') document.getElementById('join-btn').click();
 });
@@ -136,7 +136,7 @@ socket.on('joined-room', ({ roomCode, playerIndex }) => {
   myRoomCode    = roomCode;
 });
 
-// game-start fires at the start of every round
+// fires at the start of every round
 socket.on('game-start', ({ players, writerIndex: wi, round, settings, scores: s }) => {
   writerIndex  = wi;
   currentRound = round;
@@ -144,7 +144,7 @@ socket.on('game-start', ({ players, writerIndex: wi, round, settings, scores: s 
   if (settings) gameSettings = settings;
   if (s)        scores = s;
 
-  // Reset per-round waiting-screen state
+  // reset the waiting screen
   submittedStatements = null;
   stopTips();
   document.getElementById('waiting-statements-preview').classList.add('hidden');
@@ -158,7 +158,7 @@ socket.on('game-start', ({ players, writerIndex: wi, round, settings, scores: s 
 
   document.querySelector('header').classList.add('compact');
 
-  // Update score banner names and values
+  // update the score display
   document.getElementById('score-name-0').textContent = playerNames[0];
   document.getElementById('score-name-1').textContent = playerNames[1];
   document.getElementById('score-val-0').textContent  = scores[0];
@@ -203,7 +203,7 @@ socket.on('game-start', ({ players, writerIndex: wi, round, settings, scores: s 
     submitBtn.textContent = 'Submit Statements';
     submitBtn.classList.remove('sent');
     document.getElementById('writing-round').textContent = roundLabel;
-    // Show rotating writer tips
+    // show writer tips
     document.getElementById('writing-tip-box').classList.remove('hidden');
     const isOttlWriter = gameSettings.gameMode === 'ottl';
     startTips('writing-tip', isOttlWriter ? TIPS.writerOttl : TIPS.writer);
@@ -231,10 +231,10 @@ socket.on('show-statements', ({ statements }) => {
     );
     showScreen('screen-waiting');
 
-    // Show the writer a labelled preview of their statements in shuffled order
+    // show writer their shuffled statements
     if (submittedStatements) {
       const isOttl    = gameSettings.gameMode === 'ottl';
-      // In ottl the un-shuffled truth is index 0; in ttol the lie is index 2
+      // ottl: truth is at index 0, ttol: lie is at index 2
       const keyText   = isOttl ? submittedStatements[0] : submittedStatements[2];
       const previewList = document.getElementById('waiting-preview-list');
       previewList.innerHTML = '';
@@ -257,7 +257,7 @@ socket.on('show-statements', ({ statements }) => {
     }
   } else {
     stopTips();
-    // Clear typing indicator in case a stale event or timer is still pending
+    // clear any lingering typing indicator
     const indicator = document.getElementById('writer-typing-indicator');
     clearTimeout(indicator._hideTimer);
     indicator.classList.remove('is-typing');
@@ -398,7 +398,7 @@ socket.on('error-message', message => {
   showError(message);
 });
 
-// Debounced writer-typing emitter + character counters
+// typing events and char counters
 let typingDebounce = null;
 ['stmt-0', 'stmt-1', 'stmt-2'].forEach(id => {
   const input   = document.getElementById(id);
@@ -436,7 +436,7 @@ document.getElementById('submit-statements-btn').addEventListener('click', () =>
   btn.textContent = 'Submitted! Waiting for guesser…';
   btn.classList.add('sent');
 
-  // Prevent further writer-typing events after submission
+  // disable inputs after submitting
   ['stmt-0', 'stmt-1', 'stmt-2'].forEach(id => {
     document.getElementById(id).disabled = true;
   });

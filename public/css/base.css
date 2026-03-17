@@ -64,7 +64,7 @@ header h1 {
   animation: card-enter 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* compact header during gameplay */
+/* compact header in-game */
 header.compact {
   margin-bottom: 0.25rem;
 }
@@ -104,7 +104,7 @@ header.compact .tagline {
   margin-bottom: 0.4rem;
 }
 
-/* typography utilities */
+/* typography */
 .muted {
   color: #9ca3af;
   font-size: 0.9rem;
@@ -114,7 +114,7 @@ header.compact .tagline {
 
 .text-center { text-align: center; }
 
-/* visibility utility */
+/* visibility */
 .hidden { display: none !important; }
 
 /* footer */
