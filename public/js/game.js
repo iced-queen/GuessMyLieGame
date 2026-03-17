@@ -247,6 +247,10 @@ socket.on('show-statements', ({ statements }) => {
     }
   } else {
     stopTips();
+    // Clear typing indicator in case a stale event or timer is still pending
+    const indicator = document.getElementById('writer-typing-indicator');
+    clearTimeout(indicator._hideTimer);
+    indicator.classList.remove('is-typing');
     const container = document.getElementById('guess-buttons');
     container.innerHTML = '';
 
@@ -397,7 +401,7 @@ socket.on('writer-typing', () => {
   const indicator = document.getElementById('writer-typing-indicator');
   indicator.classList.add('is-typing');
   clearTimeout(indicator._hideTimer);
-  indicator._hideTimer = setTimeout(() => indicator.classList.remove('is-typing'), 3000);
+  indicator._hideTimer = setTimeout(() => indicator.classList.remove('is-typing'), 5000);
 });
 
 document.getElementById('submit-statements-btn').addEventListener('click', () => {
@@ -414,6 +418,11 @@ document.getElementById('submit-statements-btn').addEventListener('click', () =>
   btn.disabled    = true;
   btn.textContent = 'Submitted! Waiting for guesser…';
   btn.classList.add('sent');
+
+  // Prevent further writer-typing events after submission
+  ['stmt-0', 'stmt-1', 'stmt-2'].forEach(id => {
+    document.getElementById(id).disabled = true;
+  });
 
   submittedStatements = [s0, s1, s2];
   socket.emit('submit-statements', { statements: [s0, s1, s2] });
