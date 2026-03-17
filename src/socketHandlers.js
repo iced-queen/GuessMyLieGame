@@ -18,7 +18,7 @@ function registerHandlers(io) {
       if (!name) return;
 
       const totalRounds = (settings && Number.isInteger(settings.totalRounds)
-        && settings.totalRounds >= 1 && settings.totalRounds <= 20)
+        && settings.totalRounds >= 1 && settings.totalRounds <= 30)
         ? settings.totalRounds : 5;
       const gameMode = (settings && settings.gameMode === 'ottl') ? 'ottl' : 'ttol';
 
@@ -205,7 +205,7 @@ function registerHandlers(io) {
       if (room.playAgainVotes.size >= 2) {
         room.playAgainVotes.clear();
         room.round       = 1;
-        room.writerIndex = 0;
+        room.writerIndex = Math.random() < 0.5 ? 0 : 1;
         room.statements  = [];
         room.targetIndex = null;
         room.scores      = [0, 0];

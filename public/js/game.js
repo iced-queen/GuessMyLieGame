@@ -19,7 +19,7 @@ function startTips(tipElementId, tipArray, emoji = '💡') {
   stopTips();
   activeTipEl    = document.getElementById(tipElementId);
   activeTipArray = tipArray;
-  tipCycleIndex  = 0;
+  tipCycleIndex  = Math.floor(Math.random() * tipArray.length);
   activeTipEl.classList.remove('tip-fade-out');
   activeTipEl.textContent = emoji + ' ' + activeTipArray[tipCycleIndex];
   tipInterval = setInterval(() => {
@@ -146,7 +146,9 @@ socket.on('game-start', ({ players, writerIndex: wi, round, settings, scores: s 
   stopTips();
   document.getElementById('waiting-statements-preview').classList.add('hidden');
   document.getElementById('waiting-fact-box').classList.add('hidden');
-  document.getElementById('writer-typing-indicator').classList.remove('is-typing');
+  const typingIndicator = document.getElementById('writer-typing-indicator');
+  typingIndicator.classList.remove('is-typing');
+  typingIndicator.classList.add('hidden');
   document.getElementById('writing-tip-box').classList.add('hidden');
   document.getElementById('guessing-tip-box').classList.add('hidden');
 
@@ -189,6 +191,9 @@ socket.on('game-start', ({ players, writerIndex: wi, round, settings, scores: s 
         'Enter <strong>two truths</strong> in the first two fields and your <strong>one lie</strong> in the last. The order will be shuffled for the guesser.';
     }
 
+    ['stmt-0', 'stmt-1', 'stmt-2'].forEach(id => {
+      document.getElementById(id + '-count').textContent = '0 / 200';
+    });
     const submitBtn = document.getElementById('submit-statements-btn');
     submitBtn.disabled    = false;
     submitBtn.textContent = 'Submit Statements';
@@ -206,6 +211,7 @@ socket.on('game-start', ({ players, writerIndex: wi, round, settings, scores: s 
       'The writer is crafting their statements. Hang tight!'
     );
     document.getElementById('writer-typing-name').textContent = playerNames[writerIndex];
+    document.getElementById('writer-typing-indicator').classList.remove('hidden');
     document.getElementById('waiting-fact-box').classList.remove('hidden');
     startTips('waiting-fact', FACTS, '🧠');
     showScreen('screen-waiting');
@@ -387,10 +393,16 @@ socket.on('error-message', message => {
   showError(message);
 });
 
-// Debounced writer-typing emitter
+// Debounced writer-typing emitter + character counters
 let typingDebounce = null;
 ['stmt-0', 'stmt-1', 'stmt-2'].forEach(id => {
-  document.getElementById(id).addEventListener('input', () => {
+  const input   = document.getElementById(id);
+  const counter = document.getElementById(id + '-count');
+  input.addEventListener('input', () => {
+    const len = input.value.length;
+    counter.textContent = `${len} / 200`;
+    counter.classList.toggle('near-limit', len >= 160);
+
     if (typingDebounce) return;
     socket.emit('writer-typing');
     typingDebounce = setTimeout(() => { typingDebounce = null; }, 2000);
