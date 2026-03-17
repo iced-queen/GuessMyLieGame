@@ -168,7 +168,9 @@ socket.on('game-start', ({ players, writerIndex: wi, round, settings, scores: s 
 
   if (amITheWriter()) {
     ['stmt-0', 'stmt-1', 'stmt-2'].forEach(id => {
-      document.getElementById(id).value = '';
+      const el = document.getElementById(id);
+      el.value    = '';
+      el.disabled = false;
     });
 
     // update writing rows for the current game mode
