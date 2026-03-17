@@ -7,6 +7,40 @@ let playerNames   = [];
 let gameSettings  = { totalRounds: 5, gameMode: 'ttol' };
 let scores        = [0, 0];
 
+// Writer: stores the un-shuffled statements so we can label the shuffled preview
+let submittedStatements = null;
+
+let tipCycleIndex  = 0;
+let tipInterval    = null;
+let activeTipEl    = null;
+let activeTipArray = null;
+
+function startTips(tipElementId, tipArray, emoji = '💡') {
+  stopTips();
+  activeTipEl    = document.getElementById(tipElementId);
+  activeTipArray = tipArray;
+  tipCycleIndex  = 0;
+  activeTipEl.classList.remove('tip-fade-out');
+  activeTipEl.textContent = emoji + ' ' + activeTipArray[tipCycleIndex];
+  tipInterval = setInterval(() => {
+    activeTipEl.classList.add('tip-fade-out');
+    setTimeout(() => {
+      tipCycleIndex = (tipCycleIndex + 1) % activeTipArray.length;
+      activeTipEl.textContent = emoji + ' ' + activeTipArray[tipCycleIndex];
+      activeTipEl.classList.remove('tip-fade-out');
+    }, 400);
+  }, 10000);
+}
+
+function stopTips() {
+  if (tipInterval !== null) {
+    clearInterval(tipInterval);
+    tipInterval    = null;
+    activeTipEl    = null;
+    activeTipArray = null;
+  }
+}
+
 function amITheWriter() {
   return myPlayerIndex === writerIndex;
 }
@@ -99,6 +133,15 @@ socket.on('game-start', ({ players, writerIndex: wi, round, settings, scores: s 
   if (settings) gameSettings = settings;
   if (s)        scores = s;
 
+  // Reset per-round waiting-screen state
+  submittedStatements = null;
+  stopTips();
+  document.getElementById('waiting-statements-preview').classList.add('hidden');
+  document.getElementById('waiting-fact-box').classList.add('hidden');
+  document.getElementById('writer-typing-indicator').classList.remove('is-typing');
+  document.getElementById('writing-tip-box').classList.add('hidden');
+  document.getElementById('guessing-tip-box').classList.add('hidden');
+
   document.querySelector('header').classList.add('compact');
 
   // Update score banner names and values
@@ -143,13 +186,20 @@ socket.on('game-start', ({ players, writerIndex: wi, round, settings, scores: s 
     submitBtn.textContent = 'Submit Statements';
     submitBtn.classList.remove('sent');
     document.getElementById('writing-round').textContent = roundLabel;
+    // Show rotating writer tips
+    document.getElementById('writing-tip-box').classList.remove('hidden');
+    const isOttlWriter = gameSettings.gameMode === 'ottl';
+    startTips('writing-tip', isOttlWriter ? TIPS.writerOttl : TIPS.writer);
     showScreen('screen-writing');
   } else {
     document.getElementById('waiting-round').textContent = roundLabel;
     setWaiting(
       `${playerNames[writerIndex]} is writing…`,
-      'The writer is crafting their three statements. Hang tight!'
+      'The writer is crafting their statements. Hang tight!'
     );
+    document.getElementById('writer-typing-name').textContent = playerNames[writerIndex];
+    document.getElementById('waiting-fact-box').classList.remove('hidden');
+    startTips('waiting-fact', FACTS, '🧠');
     showScreen('screen-waiting');
   }
 });
@@ -159,10 +209,36 @@ socket.on('show-statements', ({ statements }) => {
     document.getElementById('waiting-round').textContent = `Round ${currentRound} / ${gameSettings.totalRounds}`;
     setWaiting(
       'Waiting for the guesser…',
-      'The other player is reading your statements and making their pick.'
+      'Can they spot your lie?'
     );
     showScreen('screen-waiting');
+
+    // Show the writer a labelled preview of their statements in shuffled order
+    if (submittedStatements) {
+      const isOttl    = gameSettings.gameMode === 'ottl';
+      // In ottl the un-shuffled truth is index 0; in ttol the lie is index 2
+      const keyText   = isOttl ? submittedStatements[0] : submittedStatements[2];
+      const previewList = document.getElementById('waiting-preview-list');
+      previewList.innerHTML = '';
+      statements.forEach((text, i) => {
+        const isLie = isOttl ? (text !== keyText) : (text === keyText);
+        const div = document.createElement('div');
+        div.className = `result-stmt ${isLie ? 'is-lie' : 'is-true'}`;
+        div.style.animationDelay = `${i * 0.1}s`;
+        const badge = document.createElement('span');
+        badge.className   = 'stmt-badge';
+        badge.textContent = isLie ? '\u2717 LIE' : '\u2713 TRUTH';
+        const textSpan = document.createElement('span');
+        textSpan.className   = 'stmt-text';
+        textSpan.textContent = text;
+        div.appendChild(badge);
+        div.appendChild(textSpan);
+        previewList.appendChild(div);
+      });
+      document.getElementById('waiting-statements-preview').classList.remove('hidden');
+    }
   } else {
+    stopTips();
     const container = document.getElementById('guess-buttons');
     container.innerHTML = '';
 
@@ -172,6 +248,8 @@ socket.on('show-statements', ({ statements }) => {
       btn.style.animationDelay = `${i * 0.1}s`;
       btn.textContent = text;
       btn.addEventListener('click', () => {
+        stopTips();
+        document.getElementById('guessing-tip-box').classList.add('hidden');
         btn.classList.add('picked');
         container.querySelectorAll('.guess-btn').forEach(b => b.disabled = true);
         socket.emit('submit-guess', { guessIndex: i });
@@ -185,6 +263,8 @@ socket.on('show-statements', ({ statements }) => {
     document.getElementById('guessing-prompt').textContent  = isOttl
       ? 'Tap the statement you think is the truth.'
       : 'Tap the statement you think is the lie.';
+    document.getElementById('guessing-tip-box').classList.remove('hidden');
+    startTips('guessing-tip', isOttl ? TIPS.guesserOttl : TIPS.guesser);
     showScreen('screen-guessing');
   }
 });
@@ -295,6 +375,23 @@ socket.on('error-message', message => {
   showError(message);
 });
 
+// Debounced writer-typing emitter
+let typingDebounce = null;
+['stmt-0', 'stmt-1', 'stmt-2'].forEach(id => {
+  document.getElementById(id).addEventListener('input', () => {
+    if (typingDebounce) return;
+    socket.emit('writer-typing');
+    typingDebounce = setTimeout(() => { typingDebounce = null; }, 2000);
+  });
+});
+
+socket.on('writer-typing', () => {
+  const indicator = document.getElementById('writer-typing-indicator');
+  indicator.classList.add('is-typing');
+  clearTimeout(indicator._hideTimer);
+  indicator._hideTimer = setTimeout(() => indicator.classList.remove('is-typing'), 3000);
+});
+
 document.getElementById('submit-statements-btn').addEventListener('click', () => {
   const s0 = document.getElementById('stmt-0').value.trim();
   const s1 = document.getElementById('stmt-1').value.trim();
@@ -310,6 +407,7 @@ document.getElementById('submit-statements-btn').addEventListener('click', () =>
   btn.textContent = 'Submitted! Waiting for guesser…';
   btn.classList.add('sent');
 
+  submittedStatements = [s0, s1, s2];
   socket.emit('submit-statements', { statements: [s0, s1, s2] });
 });
 

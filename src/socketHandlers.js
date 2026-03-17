@@ -26,7 +26,7 @@ function registerHandlers(io) {
 
       rooms[roomCode] = {
         players:        [{ id: socket.id, name }],
-        writerIndex:    0,
+        writerIndex:    Math.random() < 0.5 ? 0 : 1,
         statements:     [],
         targetIndex:    null,
         round:          1,
@@ -86,10 +86,17 @@ function registerHandlers(io) {
       console.log(`[room]       ${code} started: "${room.players[0].name}" vs "${room.players[1].name}"`);
     });
 
+    // ── writer-typing ─────────────────────────────────────────────────────────
+    socket.on('writer-typing', () => {
+      const room = getRoomForSocket(socket);
+      if (!room || room.phase !== 'writing') return;
+      if (socket.data.playerIndex !== room.writerIndex) return;
+      socket.to(socket.data.roomCode).emit('writer-typing');
+    });
+
     // ── submit-statements ────────────────────────────────────────────────────
     // statements[0] and [1] are truths, statements[2] is the lie.
-    socket.on('submit-statements', ({ statements }) => {
-      const room = getRoomForSocket(socket);
+    socket.on('submit-statements', ({ statements }) => {      const room = getRoomForSocket(socket);
       if (!room || room.phase !== 'writing') return;
       if (socket.data.playerIndex !== room.writerIndex) return;
 

@@ -1,58 +1,9 @@
-'use strict';
+// Client-side strings — keep in sync with src/strings.js
 
-// ── Flavour strings ───────────────────────────────────────────────────────────
-//
-// Each category is an array of messages. The server picks one at random when a
-// round ends and sends it to both players inside the 'round-result' event.
-//
-const strings = {
-
-  // Shown to the WRITER when the guesser found their lie
-  writerCaught: [
-    '😅 Caught! Your lie was too obvious.',
-    '🫣 They saw right through you!',
-    '🚨 Lie detector triggered.',
-    '😬 Better craft a more convincing lie next time.',
-    '👀 They were watching closely.',
-    '🔍 Busted. Try harder next round.',
-    '🫠 Your poker face needs work.',
-  ],
-
-  // Shown to the WRITER when the guesser missed the lie
-  writerWon: [
-    '😈 They fell for it! Master of deception.',
-    '🃏 Flawless performance.',
-    '🦊 Cunning. Very cunning.',
-    '💅 Too easy.',
-    '🎭 Oscar-worthy lying.',
-    '😂 That was a terrible lie and they still missed it.',
-    '🧙 Pure wizardry.',
-  ],
-
-  // Shown to the GUESSER when they found the lie
-  guesserCorrect: [
-    '🎉 You spotted the lie!',
-    '👏 Nice guess — you saw right through it!',
-    '🕵️ Nothing gets past you!',
-    '🔍 Lie detected. Great instincts!',
-    '😎 Too easy for you, apparently.',
-    '🧠 Big brain energy.',
-    '🫵 Gotcha!',
-  ],
-
-  // Shown to the GUESSER when they missed the lie
-  guesserWrong: [
-    '🤨 Suspicious… and yet, wrong.',
-    '💀 Completely bamboozled.',
-    '🙈 The lie was right there!',
-    '😬 Better luck next round.',
-    '😂 Walked right into that one.',
-    '🃏 You played yourself.',
-    '🫠 Totally fooled.',
-  ],
+const TIPS = {
 
   // Shown to the GUESSER while the writer is composing (2 Truths, 1 Lie)
-  guesserTips: [
+  guesser: [
     'Liars often add unnecessary detail to sound more credible.',
     'The most interesting-sounding statement might be the lie.',
     'Truths tend to feel natural — lies can feel slightly over-prepared.',
@@ -66,12 +17,12 @@ const strings = {
     'The lie is often the one that sounds the most like a story.',
     'Consider which statement the writer would find hardest to defend under questioning.',
     'Liars tend to avoid pronouns — look for impersonal or passive phrasing.',
-    'A statement that hedges or qualifies itself might be the one they\'re unsure about.',
-    'Your opponent knows what you\'ll expect. Sometimes the obvious one is the trick.',
+    "A statement that hedges or qualifies itself might be the one they're unsure about.",
+    "Your opponent knows what you'll expect. Sometimes the obvious one is the trick.",
   ],
 
   // Shown to the GUESSER while the writer is composing (1 Truth, 2 Lies)
-  guesserTipsOttl: [
+  guesserOttl: [
     'With two lies in the mix, the truth will likely be the most understated.',
     'The true statement is often the one that feels the least like it needs to impress.',
     'Liars have to invent two stories here — look for the one that feels most consistent.',
@@ -87,7 +38,7 @@ const strings = {
   ],
 
   // Shown to the WRITER while composing their statements (2 Truths, 1 Lie)
-  writerTips: [
+  writer: [
     'Ground your lie in something plausible — the best lies are almost true.',
     'Use specific details in your truths to make the lie feel just as real.',
     'A lie with an emotional angle is harder to dismiss.',
@@ -106,7 +57,7 @@ const strings = {
   ],
 
   // Shown to the WRITER while composing their statements (1 Truth, 2 Lies)
-  writerTipsOttl: [
+  writerOttl: [
     'You only have one truth — make it feel just as unremarkable as the lies.',
     'Keep your truth from standing out. Plain and quiet wins.',
     'Your two lies should feel distinct from each other so they both seem credible.',
@@ -121,32 +72,25 @@ const strings = {
     'Vary the style of your lies slightly so they feel independently genuine.',
   ],
 
-  // Shown to the GUESSER while waiting for the writer (Did You Know facts)
-  facts: [
-    'Most people tell 1–2 lies per day on average.',
-    'Research suggests 54% of lies go undetected by the person being lied to.',
-    'Humans are only slightly better than chance at detecting lies — about 54% accurate.',
-    'The face is the least reliable body part when spotting a liar.',
-    'Silence is a surprisingly powerful lie-detection tool — liars hate pauses.',
-    'Children start lying as early as age 2, but get better at it by age 4.',
-    'Studies show that people lie more via phone than face-to-face.',
-    'The average person encounters over 200 lies per week.',
-    'Poker players are trained specifically to suppress unconscious truth-leaking signals.',
-    'Liars tend to use fewer first-person pronouns like "I" to distance themselves from the lie.',
-    'The "Pinocchio effect" is real — lying causes a slight increase in nose temperature.',
-    'Most people focus on the wrong cues when spotting a lie (eye contact, fidgeting).',
-    'There is no single reliable tell — skilled lie detectors look for inconsistencies instead.',
-    'The more someone protests "I swear" or "honestly", the more suspicious it can appear.',
-    'Psychopaths are better at lying — they feel less stress and show fewer physical tells.',
-    'Memory is reconstructive, meaning even honest people can "remember" things that never happened.',
-    'Truthful people tend to include more spontaneous corrections and self-doubts in their stories.',
-  ],
-
 };
 
-/** Pick a random entry from an array. */
-function pick(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
-
-module.exports = { strings, pick };
+// Shown to the GUESSER while waiting for the writer (Did You Know facts)
+const FACTS = [
+  'Most people tell 1–2 lies per day on average.',
+  'Research suggests 54% of lies go undetected by the person being lied to.',
+  'Humans are only slightly better than chance at detecting lies — about 54% accurate.',
+  'The face is the least reliable body part when spotting a liar.',
+  'Silence is a surprisingly powerful lie-detection tool — liars hate pauses.',
+  'Children start lying as early as age 2, but get better at it by age 4.',
+  'Studies show that people lie more via phone than face-to-face.',
+  'The average person encounters over 200 lies per week.',
+  'Poker players are trained specifically to suppress unconscious truth-leaking signals.',
+  'Liars tend to use fewer first-person pronouns like "I" to distance themselves from the lie.',
+  'The "Pinocchio effect" is real — lying causes a slight increase in nose temperature.',
+  'Most people focus on the wrong cues when spotting a lie (eye contact, fidgeting).',
+  'There is no single reliable tell — skilled lie detectors look for inconsistencies instead.',
+  'The more someone protests "I swear" or "honestly", the more suspicious it can appear.',
+  'Psychopaths are better at lying — they feel less stress and show fewer physical tells.',
+  'Memory is reconstructive, meaning even honest people can "remember" things that never happened.',
+  'Truthful people tend to include more spontaneous corrections and self-doubts in their stories.',
+];
