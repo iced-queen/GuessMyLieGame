@@ -117,7 +117,15 @@ document.querySelectorAll('.mode-pill').forEach(btn => {
 // socket responses
 socket.on('room-created', ({ roomCode, playerIndex }) => {
   myPlayerIndex = playerIndex;
-  document.getElementById('display-room-code').textContent = roomCode;
+  const roomCodeEl = document.getElementById('display-room-code');
+  roomCodeEl.textContent = roomCode;
+  roomCodeEl.onclick = () => {
+    navigator.clipboard.writeText(roomCode).then(() => {
+      roomCodeEl.classList.add('copied');
+      setTimeout(() => roomCodeEl.classList.remove('copied'), 2000);
+    });
+  };
+  
   showScreen('screen-waiting-room');
 });
 
